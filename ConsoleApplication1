@@ -1,0 +1,59 @@
+
+// знаходимо елемент який не повторяється 
+#include <climits>
+#include <iostream>
+
+using namespace std;
+
+// функція що повертає індекс елемента що не повторюється
+
+int firstNonRepeating(string str)
+{
+    int fi[256]; // масив для зберігання першого символу
+
+    // ініцалізація всіх елементів на -1
+    for (int i = 0; i < 256; i++)
+        fi[i] = -1;
+
+    //  встановлює які  є повторювані символи на -2 і не повторюються
+    // символи містять індекс, де вони зустрічаються
+    for (int i = 0; i < str.length(); i++) {
+        if (fi[str[i]] == -1) {
+            fi[str[i]] = i;
+        }
+        else {
+            fi[str[i]] = -2;
+        }
+    }
+
+    int res = INT_MAX;
+
+    for (int i = 0; i < 256; i++) {
+
+        //Якщо цей символ не є -1 або -2, то це означає  що цей символ зустрічався лише один раз
+        // тому знаходимо мінімальний індекс усіх символів, які зустрічається лише один раз, це наш перший індекс
+        if (fi[i] >= 0)
+            res = min(res, fi[i]);
+    }
+
+    // якщо res залишається INT_MAX, це означає, що їх немає символи, які повторюються лише один раз або рядок порожній
+    if (res == INT_MAX)
+        return -1;
+    else
+        return res;
+}
+
+int main()
+{
+    string str;
+    str = "The Tao gave birth to machine language.  Machine language gave birth to the assembler.The assembler gave birth to the compiler.Now there are ten thousand languages. Each language has its purpose, however humble.Each language expresses the Yin and Yang of software.Each language has its place within the Tao. But do not program in COBOL if you can avoid it. --Geoffrey James, The Tao of Programming";
+    int firstIndex = firstNonRepeating(str);
+    if (firstIndex == -1)
+        cout << "Either all characters are repeating or "
+        "string is empty";
+    else
+        cout << "First non-repeating character is "
+        << str[firstIndex];
+
+    return 0;
+}
